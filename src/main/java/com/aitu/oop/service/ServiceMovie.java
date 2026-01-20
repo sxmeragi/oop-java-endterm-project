@@ -1,0 +1,96 @@
+package com.aitu.oop.service;
+
+import com.aitu.oop.entity.Movie;
+import com.aitu.oop.repository.MovieRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ServiceMovie {
+
+    private final MovieRepository movieRepository;
+
+    public ServiceMovie(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
+
+    // CREATE
+    public void addMovie(Movie movie) {
+        movieRepository.addMovie(movie);
+    }
+
+    // READ
+    public List<Movie> findAllMovies() {
+        return movieRepository.findAllMovies();
+    }
+
+    public Movie findMovieById(int id) {
+        for (Movie movie : movieRepository.findAllMovies()) {
+            if (movie.getId() == id) {
+                return movie;
+            }
+        }
+        return null;
+    }
+
+    // UPDATE
+    public boolean updateMovieRating(int movieId, double rating) {
+        Movie movie = findMovieById(movieId);
+        if (movie == null) {
+            return false;
+        }
+        movie.setRating(rating);
+        return true;
+    }
+
+    // DELETE
+    public boolean deleteMovieById(int id) {
+        List<Movie> movies = movieRepository.findAllMovies();
+        for (Movie movie : movies) {
+            if (movie.getId() == id) {
+                movies.remove(movie);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // SEARCH & FILTERS
+    public List<Movie> findMoviesByGenre(int genreId) {
+        return movieRepository.findMoviesByGenre(genreId);
+    }
+
+    public List<Movie> findMoviesByTitle(String title) {
+        List<Movie> result = new ArrayList<>();
+        for (Movie movie : movieRepository.findAllMovies()) {
+            if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                result.add(movie);
+            }
+        }
+        return result;
+    }
+
+    public List<Movie> findMoviesByReleaseYear(int year) {
+        List<Movie> result = new ArrayList<>();
+        for (Movie movie : movieRepository.findAllMovies()) {
+            if (movie.getReleaseYear() == year) {
+                result.add(movie);
+            }
+        }
+        return result;
+    }
+
+    public List<Movie> findTopRatedMovies() {
+        return movieRepository.findTopRatedMovies();
+    }
+
+    public List<Movie> findMoviesWithRatingAbove(double rating) {
+        List<Movie> result = new ArrayList<>();
+        for (Movie movie : movieRepository.findAllMovies()) {
+            if (movie.getRating() > rating) {
+                result.add(movie);
+            }
+        }
+        return result;
+    }
+}
