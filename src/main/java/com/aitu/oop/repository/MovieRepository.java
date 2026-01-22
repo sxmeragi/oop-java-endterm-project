@@ -138,4 +138,36 @@ public class MovieRepository {
 
         return movies;
     }
+
+    public Movie findMovieById(int id) {
+        String sql = """
+                SELECT m.*, g.id as genre_id, g.name as genre_name
+                FROM movies m
+                JOIN genres on m.genre_id = g.id
+                WHERE m.id = ?
+                """;
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Genre genre = new Genre(rs.getInt("genre_id"),
+                            rs.getString("genre_name"));
+                    Movie movie = new Movie(
+                            rs.getInt("id"),
+                            rs.getString("title"),
+                            rs.getInt("release_year"),
+                            rs.getDouble("rating"),
+                            genre);
+                    return movie;
+                }
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }
