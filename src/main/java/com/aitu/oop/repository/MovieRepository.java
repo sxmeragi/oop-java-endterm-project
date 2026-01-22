@@ -1,9 +1,9 @@
 package com.aitu.oop.repository;
 
-import com.aitu.oop.entity.Movie;
-import com.aitu.oop.entity.Genre;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.aitu.oop.entity.Movie;
 
 public class MovieRepository {
 
