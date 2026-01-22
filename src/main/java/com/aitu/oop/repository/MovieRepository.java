@@ -151,7 +151,7 @@ public class MovieRepository {
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
+                if (rs.next()) {
                     Genre genre = new Genre(rs.getInt("genre_id"),
                             rs.getString("genre_name"));
                     Movie movie = new Movie(
