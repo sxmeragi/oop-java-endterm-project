@@ -18,3 +18,12 @@ CREATE TABLE users (
     password VARCHAR(150) NOT NULL,
     role VARCHAR(20) NOT NULL CHECK (role IN ('USER', 'ADMIN'))
 );
+
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    movie_id INT NOT NULL REFERENCES movies(id),
+    user_id INT NOT NULL REFERENCES users(id),
+    rating DECIMAL(2,1) NOT NULL CHECK (rating >= 0 AND rating <= 10),
+    comment_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
