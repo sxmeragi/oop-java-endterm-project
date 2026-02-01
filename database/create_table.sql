@@ -10,3 +10,11 @@ CREATE TABLE movies (
     rating DECIMAL(2,1),
     genre_id INT REFERENCES genres(id)
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password VARCHAR(150) NOT NULL,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('USER', 'ADMIN'))
+);
