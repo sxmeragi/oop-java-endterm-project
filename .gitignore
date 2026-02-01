@@ -24,3 +24,5 @@ Thumbs.db
 *.ear
 *.db
 
+# secrets
+src/main/resources/application.properties

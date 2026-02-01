@@ -1,10 +1,10 @@
 package com.aitu.oop.service;
 
-import com.aitu.oop.entity.Movie;
-import com.aitu.oop.repository.MovieRepository;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.aitu.oop.entity.Movie;
+import com.aitu.oop.repository.MovieRepository;
 
 public class ServiceMovie {
 
