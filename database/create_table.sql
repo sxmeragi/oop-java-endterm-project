@@ -24,6 +24,5 @@ CREATE TABLE reviews (
     movie_id INT NOT NULL REFERENCES movies(id),
     user_id INT NOT NULL REFERENCES users(id),
     rating DECIMAL(2,1) NOT NULL CHECK (rating >= 0 AND rating <= 10),
-    comment_text TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    comment_text TEXT
 );
