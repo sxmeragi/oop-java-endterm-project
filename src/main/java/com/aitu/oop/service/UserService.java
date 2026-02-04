@@ -5,7 +5,12 @@ import com.aitu.oop.repository.UserRepository;
 
 public class UserService {
 
-    private final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
+    
+    
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     public User login(String username, String password) {
         User user = userRepository.findByUsername(username);
