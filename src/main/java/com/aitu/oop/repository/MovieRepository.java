@@ -19,7 +19,7 @@ public class MovieRepository {
                     VALUES(?,?,?,?)
                 """;
         try (Connection connect = DatabaseConfig.getConnection();
-                PreparedStatement ps = connect.prepareStatement(sql)) {
+             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, movie.getTitle());
             ps.setInt(2, movie.getReleaseYear());
             ps.setDouble(3, movie.getRating());
@@ -39,8 +39,8 @@ public class MovieRepository {
                 JOIN genres g ON m.genre_id = g.id
                     """;
         try (Connection conn = DatabaseConfig.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Genre genre = new Genre(
                         rs.getInt("genre_id"),
@@ -73,7 +73,7 @@ public class MovieRepository {
                 """;
 
         try (Connection conn = DatabaseConfig.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, genreId);
 
@@ -114,8 +114,8 @@ public class MovieRepository {
                 """;
 
         try (Connection conn = DatabaseConfig.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Genre genre = new Genre(
@@ -147,7 +147,7 @@ public class MovieRepository {
                 WHERE m.id = ?
                 """;
         try (Connection connection = DatabaseConfig.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
