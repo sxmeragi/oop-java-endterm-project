@@ -3,7 +3,6 @@ package com.aitu.oop.DatabaseConfig;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConfig {
@@ -13,10 +12,17 @@ public class DatabaseConfig {
     private static String password;
 
     static {
-        try (InputStream input = DatabaseConfig.class
-                .getClassLoader()
-                .getResourceAsStream("application.properties")) {
+        try {
             Properties props = new Properties();
+
+            InputStream input = DatabaseConfig.class
+                    .getClassLoader()
+                    .getResourceAsStream("db.properties");
+
+            if (input == null) {
+                throw new RuntimeException("db.properties NOT FOUND in resources");
+            }
+
             props.load(input);
 
             url = props.getProperty("db.url");
@@ -24,14 +30,15 @@ public class DatabaseConfig {
             password = props.getProperty("db.password");
 
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load DB Config", e);
-
+            throw new RuntimeException("Failed to load DB config", e);
         }
-
     }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(url, username, password);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }
