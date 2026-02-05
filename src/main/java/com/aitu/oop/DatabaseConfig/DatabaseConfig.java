@@ -29,9 +29,6 @@ public class DatabaseConfig {
             username = props.getProperty("db.username");
             password = props.getProperty("db.password");
 
-            System.out.println("DB URL: " + url);
-            System.out.println("DB USER: " + username);
-
         } catch (Exception e) {
             throw new RuntimeException("Failed to load DB config", e);
         }
