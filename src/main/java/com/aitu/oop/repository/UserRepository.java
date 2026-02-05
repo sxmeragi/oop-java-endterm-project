@@ -23,6 +23,8 @@ public class UserRepository {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getRole());
+        
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

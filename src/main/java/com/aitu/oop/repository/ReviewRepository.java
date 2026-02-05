@@ -24,6 +24,8 @@ public class ReviewRepository {
             ps.setDouble(3, review.getRating());
             ps.setString(4, review.getComment());
 
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
