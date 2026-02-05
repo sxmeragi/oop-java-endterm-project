@@ -54,13 +54,10 @@ public class ServiceMovie {
     }
 
     public List<Movie> findMoviesByTitle(String title) {
-        List<Movie> result = new ArrayList<>();
-        for (Movie movie : movieRepository.findAllMovies()) {
-            if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) {
-                result.add(movie);
-            }
-        }
-        return result;
+       return movieRepository.findAllMovies()
+                .stream()
+               .filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase()))
+               .toList();
     }
 
     public List<Movie> findMoviesByReleaseYear(int year) {
@@ -78,12 +75,9 @@ public class ServiceMovie {
     }
 
     public List<Movie> findMoviesWithRatingAbove(double rating) {
-        List<Movie> result = new ArrayList<>();
-        for (Movie movie : movieRepository.findAllMovies()) {
-            if (movie.getRating() > rating) {
-                result.add(movie);
-            }
-        }
-        return result;
+       return movieRepository.findAllMovies()
+               .stream()
+               .filter(movie -> movie.getRating() >  rating)
+               .toList();
     }
 }
