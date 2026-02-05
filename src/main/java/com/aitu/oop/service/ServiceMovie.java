@@ -45,14 +45,7 @@ public class ServiceMovie {
 
     // DELETE
     public boolean deleteMovieById(int id) {
-        List<Movie> movies = movieRepository.findAllMovies();
-        for (Movie movie : movies) {
-            if (movie.getId() == id) {
-                movies.remove(movie);
-                return true;
-            }
-        }
-        return false;
+        return movieRepository.deleteMovieById(id);
     }
 
     // SEARCH & FILTERS

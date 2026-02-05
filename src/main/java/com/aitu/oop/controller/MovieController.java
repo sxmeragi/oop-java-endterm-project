@@ -4,15 +4,18 @@ import java.util.Scanner;
 
 import com.aitu.oop.entity.Genre;
 import com.aitu.oop.entity.Movie;
+import com.aitu.oop.repository.GenreRepository;
 import com.aitu.oop.service.ServiceMovie;
 
 public class MovieController {
 
     private final ServiceMovie serviceMovie;
+    private final GenreRepository genreRepository;
     private final Scanner scanner = new Scanner(System.in);
 
-    public MovieController(ServiceMovie serviceMovie) {
+    public MovieController(ServiceMovie serviceMovie, GenreRepository genreRepository) {
         this.serviceMovie = serviceMovie;
+        this.genreRepository = genreRepository;
     }
 
     public void showMovies() {
@@ -36,8 +39,10 @@ public class MovieController {
         System.out.print("Genre: ");
         String genre = scanner.nextLine();
 
+        Genre genreObj = genreRepository.findByName(genre);
+
         serviceMovie.addMovie(new Movie(title,
-                rYear, rating, new Genre(genre)));
+                rYear, rating,genreObj ));
 
         System.out.println("Movie added");
     }

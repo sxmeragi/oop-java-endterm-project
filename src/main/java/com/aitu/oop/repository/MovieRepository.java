@@ -24,6 +24,8 @@ public class MovieRepository {
             ps.setInt(2, movie.getReleaseYear());
             ps.setDouble(3, movie.getRating());
             ps.setInt(4, movie.getGenre().getId());
+
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -169,5 +171,18 @@ public class MovieRepository {
             throw new RuntimeException(e);
         }
         return null;
+    }
+    public boolean deleteMovieById(int id) {
+        String sql = "DELETE FROM movies WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

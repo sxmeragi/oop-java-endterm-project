@@ -30,9 +30,9 @@ public class UserController {
             return;
         }
         if (currentUser.getRole().equalsIgnoreCase("ADMIN")) {
-
+            adminMenu(currentUser);
         } else {
-
+                userMenu(currentUser);
         }
 
     }
@@ -66,10 +66,13 @@ public class UserController {
             switch (choice) {
                 case 1:
                     movieController.showMovies();
+                    break;
                 case 2:
                     movieController.addMovie();
+                    break;
                 case 3:
                     movieController.deleteMovie();
+                    break;
                 case 4:
                     return;
                 default:
@@ -93,8 +96,10 @@ public class UserController {
             switch (choice) {
                 case 1:
                     movieController.showMovies();
+                    break;
                 case 2:
                     reviewController.addReview(user);
+                    break;
                 case 3:
                     return;
                 default:
