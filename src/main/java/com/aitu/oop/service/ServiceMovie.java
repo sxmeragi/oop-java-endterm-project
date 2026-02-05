@@ -21,10 +21,10 @@ public class ServiceMovie {
     }
 
     // READ
-    public Movie findMovieById(int id) {
-        validateMovieId(id);
-        return movieRepository.findMovieById(id);
+   public List<Movie> findAllMovies() {
+        return movieRepository.findAllMovies();
     }
+
 
     // UPDATE
     public boolean updateMovieRating(int movieId, double rating) {

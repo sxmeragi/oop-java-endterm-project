@@ -17,10 +17,10 @@ public class DatabaseConfig {
 
             InputStream input = DatabaseConfig.class
                     .getClassLoader()
-                    .getResourceAsStream("db.properties");
+                    .getResourceAsStream("application.properties");
 
             if (input == null) {
-                throw new RuntimeException("db.properties NOT FOUND in resources");
+                throw new RuntimeException("application.properties NOT FOUND in resources");
             }
 
             props.load(input);
