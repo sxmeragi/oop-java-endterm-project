@@ -14,28 +14,21 @@ public class ServiceMovie {
         this.movieRepository = movieRepository;
     }
 
-    // CREATE
     public void addMovie(Movie movie) {
+        validateMovie(movie);
         movieRepository.addMovie(movie);
     }
 
-    // READ
-    public List<Movie> findAllMovies() {
+   public List<Movie> findAllMovies() {
         return movieRepository.findAllMovies();
     }
 
-    public Movie findMovieById(int id) {
-        for (Movie movie : movieRepository.findAllMovies()) {
-            if (movie.getId() == id) {
-                return movie;
-            }
-        }
-        return null;
-    }
 
-    // UPDATE
     public boolean updateMovieRating(int movieId, double rating) {
-        Movie movie = findMovieById(movieId);
+        validateMovieId(movieId);
+        validateRating(rating);
+
+        Movie movie = movieRepository.findMovieById(movieId);
         if (movie == null) {
             return false;
         }
@@ -43,31 +36,24 @@ public class ServiceMovie {
         return true;
     }
 
-    // DELETE
     public boolean deleteMovieById(int id) {
-        List<Movie> movies = movieRepository.findAllMovies();
-        for (Movie movie : movies) {
-            if (movie.getId() == id) {
-                movies.remove(movie);
-                return true;
-            }
-        }
-        return false;
+        return movieRepository.deleteMovieById(id);
     }
 
-    // SEARCH & FILTERS
+    public Movie findMovieById(int id){
+        return movieRepository.findMovieById(id);
+    }
+
+
     public List<Movie> findMoviesByGenre(int genreId) {
         return movieRepository.findMoviesByGenre(genreId);
     }
 
     public List<Movie> findMoviesByTitle(String title) {
-        List<Movie> result = new ArrayList<>();
-        for (Movie movie : movieRepository.findAllMovies()) {
-            if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) {
-                result.add(movie);
-            }
-        }
-        return result;
+       return movieRepository.findAllMovies()
+                .stream()
+               .filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase()))
+               .toList();
     }
 
     public List<Movie> findMoviesByReleaseYear(int year) {
@@ -85,12 +71,43 @@ public class ServiceMovie {
     }
 
     public List<Movie> findMoviesWithRatingAbove(double rating) {
-        List<Movie> result = new ArrayList<>();
-        for (Movie movie : movieRepository.findAllMovies()) {
-            if (movie.getRating() > rating) {
-                result.add(movie);
-            }
-        }
-        return result;
+       return movieRepository.findAllMovies()
+               .stream()
+               .filter(movie -> movie.getRating() >  rating)
+               .toList();
     }
+
+private void validateMovie(Movie movie) {
+    if (movie == null) {
+        throw new IllegalArgumentException("Movie cannot be null");
+    }
+
+    if (movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
+        throw new IllegalArgumentException("Movie title cannot be empty");
+    }
+
+    if (movie.getReleaseYear() < 1888 || movie.getReleaseYear() > 2100) {
+        throw new IllegalArgumentException("Invalid release year");
+    }
+
+    if (movie.getRating() < 0 || movie.getRating() > 10) {
+        throw new IllegalArgumentException("Rating must be between 0 and 10");
+    }
+
+    if (movie.getGenre() == null) {
+        throw new IllegalArgumentException("Genre must not be null");
+    }
+}
+
+private void validateMovieId(int id) {
+    if (id <= 0) {
+        throw new IllegalArgumentException("Invalid movie ID");
+    }
+}
+
+private void validateRating(double rating) {
+    if (rating < 0 || rating > 10) {
+        throw new IllegalArgumentException("Rating must be between 0 and 10");
+    }
+}
 }

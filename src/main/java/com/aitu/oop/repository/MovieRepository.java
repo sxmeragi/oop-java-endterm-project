@@ -19,11 +19,13 @@ public class MovieRepository {
                     VALUES(?,?,?,?)
                 """;
         try (Connection connect = DatabaseConfig.getConnection();
-                PreparedStatement ps = connect.prepareStatement(sql)) {
+             PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setString(1, movie.getTitle());
             ps.setInt(2, movie.getReleaseYear());
             ps.setDouble(3, movie.getRating());
             ps.setInt(4, movie.getGenre().getId());
+
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -39,8 +41,8 @@ public class MovieRepository {
                 JOIN genres g ON m.genre_id = g.id
                     """;
         try (Connection conn = DatabaseConfig.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Genre genre = new Genre(
                         rs.getInt("genre_id"),
@@ -73,7 +75,7 @@ public class MovieRepository {
                 """;
 
         try (Connection conn = DatabaseConfig.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, genreId);
 
@@ -114,8 +116,8 @@ public class MovieRepository {
                 """;
 
         try (Connection conn = DatabaseConfig.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Genre genre = new Genre(
@@ -143,11 +145,11 @@ public class MovieRepository {
         String sql = """
                 SELECT m.*, g.id as genre_id, g.name as genre_name
                 FROM movies m
-                JOIN genres on m.genre_id = g.id
+                JOIN genres g on m.genre_id = g.id
                 WHERE m.id = ?
                 """;
         try (Connection connection = DatabaseConfig.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -169,5 +171,18 @@ public class MovieRepository {
             throw new RuntimeException(e);
         }
         return null;
+    }
+    public boolean deleteMovieById(int id) {
+        String sql = "DELETE FROM movies WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

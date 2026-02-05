@@ -15,6 +15,7 @@ public class ReviewService {
 
     public void createReview(Review review) {
 
+        checkReview(review);
         reviewRepository.addReview(review);
     }
 
@@ -28,6 +29,16 @@ public class ReviewService {
 
     public List<Review> getReviewsByUsersId(int userId) {
         return reviewRepository.findReviewByUserId(userId);
+    }
+
+    private void checkReview(Review review) {
+        if (review.getComment() == null) {
+            throw new IllegalArgumentException("Comment should not be empty");
+        }
+
+        if (review.getRating() < 0 || review.getRating() > 10) {
+            throw new IllegalArgumentException("Rating should be between 0 or 10");
+        }
     }
 
 }
