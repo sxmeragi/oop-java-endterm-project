@@ -6,7 +6,6 @@ public class Genre {
     private int id;
     private String name;
 
-
     public Genre() {
     }
 
@@ -19,7 +18,6 @@ public class Genre {
         this.name = name;
     }
 
-
     public int getId() {
         return id;
     }
@@ -27,7 +25,6 @@ public class Genre {
     public String getName() {
         return name;
     }
-
 
     public void setId(int id) {
         this.id = id;
