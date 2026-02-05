@@ -23,23 +23,46 @@ public class UserController {
     }
 
     public void Start() {
-        User currentUser = Login();
+    while (true) {
+        System.out.println("\n=== Movie-Search ===");
+        System.out.println("1. Login");
+        System.out.println("2. Register");
+        System.out.println("3. Exit");
+        System.out.print("Choose option: ");
+
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        User currentUser = null;
+
+        switch (choice) {
+            case 1 -> currentUser = login();
+            case 2 -> currentUser = register();
+            case 3 -> {
+                System.out.println("Bye!");
+                return;
+            }
+            default -> {
+                System.out.println("Invalid option");
+                continue;
+            }
+        }
 
         if (currentUser == null) {
-            System.out.println("Login failed");
-            return;
+            System.out.println("Authentication failed");
+            continue;
         }
+
         if (currentUser.getRole().equalsIgnoreCase("ADMIN")) {
             adminMenu(currentUser);
         } else {
-                userMenu(currentUser);
+            userMenu(currentUser);
         }
-
+    }
     }
 
-    public User Login() {
+    public User login() {
 
-        System.out.print("Enter Login: ");
+        System.out.print("\nEnter Login: ");
         String username = scanner.nextLine();
 
         System.out.print("Enter password: ");
@@ -47,14 +70,31 @@ public class UserController {
 
         User user = userService.login(username, password);
 
-        System.out.println("Succes login");
-        System.out.println("Welcome" + user.getUserName());
+        System.out.println("\nSucces login");
+        System.out.println("Welcome " + user.getUserName() + "!");
 
         return user;
     }
 
+    public User register(){
+
+    System.out.print("Username: ");
+    String username = scanner.nextLine();
+
+    System.out.print("Email: ");
+    String email = scanner.nextLine();
+
+    System.out.print("Password: ");
+    String password = scanner.nextLine();
+
+    User user = new User(username, email, password, "USER");
+    return userService.register(user);
+
+    }
+
     private void adminMenu(User user) {
         while (true) {
+            System.out.println("\n=== Admin-Menu ===");
             System.out.println("""
                     1. Show movies
                     2. Add movie
@@ -85,10 +125,13 @@ public class UserController {
 
     private void userMenu(User user) {
         while (true) {
+            System.out.println("\n=== Movie-Search ===");
             System.out.println("""
                     1. Show movies
-                    2. Add review
-                    3. Exit
+                    2. Show movies by genre
+                    3. Add review
+                    4. Show movies review
+                    9. Exit
                     """);
 
             int choice = Integer.parseInt(scanner.nextLine());
@@ -98,9 +141,15 @@ public class UserController {
                     movieController.showMovies();
                     break;
                 case 2:
-                    reviewController.addReview(user);
+                    movieController.showMoviesByGenre();
                     break;
                 case 3:
+                    reviewController.addReview(user);
+                    break;
+                case 4:
+                    reviewController.ShowReviewByMovie();
+                    break;
+                case 9:
                     return;
                 default:
                     System.out.println("Invalid option");

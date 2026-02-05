@@ -14,19 +14,16 @@ public class ServiceMovie {
         this.movieRepository = movieRepository;
     }
 
-    // CREATE
     public void addMovie(Movie movie) {
         validateMovie(movie);
         movieRepository.addMovie(movie);
     }
 
-    // READ
    public List<Movie> findAllMovies() {
         return movieRepository.findAllMovies();
     }
 
 
-    // UPDATE
     public boolean updateMovieRating(int movieId, double rating) {
         validateMovieId(movieId);
         validateRating(rating);
@@ -39,12 +36,15 @@ public class ServiceMovie {
         return true;
     }
 
-    // DELETE
     public boolean deleteMovieById(int id) {
         return movieRepository.deleteMovieById(id);
     }
 
-    // SEARCH & FILTERS
+    public Movie findMovieById(int id){
+        return movieRepository.findMovieById(id);
+    }
+
+
     public List<Movie> findMoviesByGenre(int genreId) {
         return movieRepository.findMoviesByGenre(genreId);
     }

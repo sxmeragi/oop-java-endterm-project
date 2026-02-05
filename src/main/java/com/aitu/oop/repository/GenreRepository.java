@@ -4,12 +4,40 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aitu.oop.DatabaseConfig.DatabaseConfig;
 import com.aitu.oop.entity.Genre;
 
 public class GenreRepository {
     
+    public List<Genre> findAllGenres(){
+        List<Genre> genres = new ArrayList<>();
+        String sql = """
+                    select * from genres
+                """;
+        try(Connection connection = DatabaseConfig.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();){
+            while(rs.next()){
+                Genre genre = new Genre(
+                    rs.getInt("id"),
+                    rs.getString("name")
+
+                );
+                genres.add(genre);
+
+            }
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return genres;
+
+    }
+
+
+
     public Genre findByName(String name) {
         String sql = "SELECT id, name FROM genres WHERE name = ?";
 

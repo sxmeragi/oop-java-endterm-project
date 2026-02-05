@@ -145,7 +145,7 @@ public class MovieRepository {
         String sql = """
                 SELECT m.*, g.id as genre_id, g.name as genre_name
                 FROM movies m
-                JOIN genres on m.genre_id = g.id
+                JOIN genres g on m.genre_id = g.id
                 WHERE m.id = ?
                 """;
         try (Connection connection = DatabaseConfig.getConnection();

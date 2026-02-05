@@ -59,6 +59,29 @@ public class UserRepository {
         return users;
 
     }
+  public User findById(int id) {
+        String sql = """
+                    SELECT * FROM users
+                    where id = ?
+                """;
+        try (Connection connection = DatabaseConfig.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("role"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+
+    }
 
     public User findByUsername(String username) {
         String sql = """

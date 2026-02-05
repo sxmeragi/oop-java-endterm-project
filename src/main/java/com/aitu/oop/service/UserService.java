@@ -39,14 +39,24 @@ public class UserService {
         }
     }
 
-    public void register(User user) {
+    public User register(User user) {
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
             throw new IllegalArgumentException("Username is required");
         }
-        if (user.getPassword().length() < 5) {
+        if (user.getPassword() == null || user.getPassword().length() < 5) {
             throw new IllegalArgumentException("Password is too short");
         }
+        if (userRepository.findByUsername(user.getUserName()) != null) {
+            throw new IllegalArgumentException("Username already exists");
+        } 
 
+        user.setRole("USER");
         userRepository.addUser(user);
+        return user;
+    }
+
+
+    public User findById(int Id){
+        return userRepository.findById(Id);
     }
 }
