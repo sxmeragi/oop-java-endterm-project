@@ -20,15 +20,17 @@ public class App {
     public static void main(String[] args) {
 
         MovieRepository movieRepository = RepositoryFactory.createMovieRepository();
-
         ServiceMovie serviceMovie = new ServiceMovie(movieRepository);
-        UserRepository userRepository = new UserRepository();
-        ReviewRepository reviewRepository = new ReviewRepository();
+
+        UserRepository userRepository = RepositoryFactory.createUserRepository(); 
+        UserService userService = new UserService(userRepository);
+
+        ReviewRepository reviewRepository = RepositoryFactory.createReviewRepository();
+        ReviewService reviewService = new ReviewService(reviewRepository);
+
         GenreRepository genreRepository = new GenreRepository();
         GenreService genreService = new GenreService(genreRepository);
 
-        UserService userService = new UserService(userRepository);
-        ReviewService reviewService = new ReviewService(reviewRepository);
 
         MovieController movieController = new MovieController(serviceMovie, genreService);
         ReviewController reviewController = new ReviewController(serviceMovie, reviewService, userService);
